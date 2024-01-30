@@ -13,11 +13,13 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useMemo } from "react";
 import { LinearTransition } from "react-native-reanimated";
+import RNRestart from "react-native-restart";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRefresh } from "../../contexts/Refresh";
 import SvgIcons from "../svg";
 import ToolbarCmpItem from "./Item";
 import { IToolbarCmp } from "./type";
-import { useRefresh } from "../../contexts/Refresh";
+import { useFileEditorSettingsModal } from "../../contexts/FileEditorSettingsModal";
 let Chevron = (isRTL = false) =>
   SvgIcons[`Chevron${isRTL ? "Forward" : "Back"}16`];
 export default function ToolbarCmp({
@@ -29,12 +31,14 @@ export default function ToolbarCmp({
   hasStatusbar = false,
   colors = {},
 }: IToolbarCmp) {
+  let { show } = useFileEditorSettingsModal();
   let { reload } = useRefresh();
   let {
     navigate = "#666666",
     navigateText = "#8f8f8f",
     title: titleColor = "#000000",
     clearCacheBin = "#666666",
+    settings = "#666666",
   } = colors;
   let insets = useSafeAreaInsets();
   let fd = useMemo(() => getStyle([`fd${isRTL ? "rr" : "r"}`]), [isRTL]);
@@ -63,6 +67,7 @@ export default function ToolbarCmp({
     try {
       await AsyncStorage.clear();
       reload(750);
+      RNRestart.restart();
     } catch (e: any) {}
   }, []);
   return (
@@ -153,7 +158,7 @@ export default function ToolbarCmp({
       </ReView>
       <ReView
         {...{
-          // style: [fd, getStyle(["aic"]), gap(12)],
+          style: [fd, getStyle(["aic"]), gap(12)],
           layout: LinearTransition,
         }}>
         <ToolbarCmpItem
@@ -176,6 +181,30 @@ export default function ToolbarCmp({
                   layout: LinearTransition,
                 }}>
                 Clear cache
+              </ReText>
+            ),
+          }}
+        />
+        <ToolbarCmpItem
+          {...{
+            icon: (
+              <ScaleButton
+                {...{
+                  onPress: show,
+                  style: [bs],
+                  // disabled: backDisabled,
+                  layout: LinearTransition,
+                }}>
+                <SvgIcons.Gear24 {...{ color: settings }} />
+              </ScaleButton>
+            ),
+            detail: (
+              <ReText
+                {...{
+                  style: [ds],
+                  layout: LinearTransition,
+                }}>
+                Settings
               </ReText>
             ),
           }}

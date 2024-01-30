@@ -9,6 +9,7 @@ import Edit24 from "./Edit24";
 import EmptyFile120 from "./EmptyFile120";
 import Folder24Close from "./Folder24Close";
 import Folder24Open from "./Folder24Open";
+import Gear24 from "./Gear24";
 import Heart24Empty from "./Heart24Empty";
 import Heart24Fill from "./Heart24Fill";
 import Loading24 from "./Loading24";
@@ -34,5 +35,6 @@ const SvgIcons = {
   EmptyFile120,
   Edit24,
   Loading24,
+  Gear24,
 };
 export default SvgIcons;

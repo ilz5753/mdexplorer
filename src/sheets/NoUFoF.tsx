@@ -1,4 +1,5 @@
 import {
+  ReScrollView,
   ReText,
   ReView,
   ScaleButton,
@@ -40,7 +41,7 @@ export default function NoUFoF({
     [name, isFile, fileSuffix],
   );
   let [FoFName, setFoFName] = useState(rsn);
-  let g = <ReView {...{ style: [padding("t", 30)] }} />;
+  let g = <ReView {...{ style: [padding("t", 21)] }} />;
   let rtn = useMemo(() => FoFName.trim(), [FoFName]);
   let fsRtn = useMemo(() => `${rtn}${fileSuffix}`, [rtn, fileSuffix]);
   let emptyRtn = useMemo(() => isEmpty(rtn), [rtn]);
@@ -71,89 +72,95 @@ export default function NoUFoF({
     <CustomSheetProvider {...{ sheetId }}>
       <ReView
         {...{
-          style: [padding("h", 16)],
+          style: [
+            padding("v", 12),
+            getStyle(["aic"]),
+            borderWidth("b", 0.75),
+            borderColor("b", "#777777"),
+          ],
         }}>
+        <ReText
+          {...{
+            style: [fontSize(20), color("#000000"), getStyle(["fw8"])],
+          }}>
+          {newMode ? "Create New" : "Edit"} {_if ? "Markdown File" : "Folder"}
+        </ReText>
+      </ReView>
+      <ReScrollView {...{ keyboardShouldPersistTaps: "always" }}>
+        {g}
         <ReView
           {...{
-            style: [
-              padding("v", 12),
-              getStyle(["aic"]),
-              borderWidth("b", 0.75),
-              borderColor("b", "#777777"),
-            ],
+            style: [padding("h", 16)],
           }}>
-          <ReText
+          <ReView {...{ style: [getStyle(["aic"])] }}>
+            <Toggle
+              {...{
+                value: isFile,
+                onPress: updateIsFile,
+                trackBar: {
+                  activeBackgroundColor: "#ff5400",
+                  inActiveBackgroundColor: "#9a9a9a",
+                  borderWidth: 3.6,
+                  width: 100,
+                },
+                thumbStyle: { backgroundColor: "#ffffff" },
+                rightComponent: (
+                  <SvgIcons.Markdown24 {...{ color: "#0a45a0" }} />
+                ),
+                leftComponent: (
+                  <SvgIcons.Folder24Close {...{ color: "#4100ff" }} />
+                ),
+                disabled: !isUndefined(IsFile),
+              }}
+            />
+          </ReView>
+          {g}
+          <InputOutline
             {...{
-              style: [fontSize(20), color("#000000"), getStyle(["fw8"])],
-            }}>
-            {newMode ? "Create New" : "Edit"} {_if ? "Markdown File" : "Folder"}
-          </ReText>
-        </ReView>
-        {g}
-        <ReView {...{ style: [getStyle(["aic"])] }}>
-          <Toggle
-            {...{
-              value: isFile,
-              onPress: updateIsFile,
-              trackBar: {
-                activeBackgroundColor: "#ff5400",
-                inActiveBackgroundColor: "#9a9a9a",
-                borderWidth: 3.6,
-                width: 100,
-              },
-              thumbStyle: { backgroundColor: "#ffffff" },
-              rightComponent: <SvgIcons.Markdown24 {...{ color: "#0a45a0" }} />,
-              leftComponent: (
-                <SvgIcons.Folder24Close {...{ color: "#4100ff" }} />
-              ),
-              disabled: !isUndefined(IsFile),
+              value: FoFName,
+              onChangeText: setFoFName,
+              placeholder: ph,
+              placeholderTextColor: "#878787",
+              error: emptyRtn
+                ? `Please Fill ${ph}.`
+                : nameExist
+                ? `${ph} Already Exist.`
+                : undefined,
             }}
           />
+          {g}
+          <InputOutline
+            {...{
+              value: path,
+              placeholder: "Path",
+              placeholderTextColor: "#878787",
+              editable: false,
+              backgroundColor: "#f7f7f7",
+            }}
+          />
+          {g}
+          <ScaleButton
+            {...{
+              style: [
+                fw,
+                getStyle(["aic"]),
+                borderRadius("", 12),
+                backgroundColor(disabled ? "#c0c0c0" : "#0099ff"),
+                padding("v", 16),
+              ],
+              onPress: save,
+              disabled,
+            }}>
+            <ReText
+              {...{
+                style: [fontSize(16), color("#ffffff"), getStyle(["fw6"])],
+              }}>
+              {newMode ? "Create" : "Save"}
+            </ReText>
+          </ScaleButton>
+          {/* {g} */}
         </ReView>
-        {g}
-        <InputOutline
-          {...{
-            value: FoFName,
-            onChangeText: setFoFName,
-            placeholder: ph,
-            placeholderTextColor: "#878787",
-            error: emptyRtn
-              ? `Please Fill ${ph}.`
-              : nameExist
-              ? `${ph} Already Exist.`
-              : undefined,
-          }}
-        />
-        {g}
-        <InputOutline
-          {...{
-            value: path,
-            placeholder: "Path",
-            placeholderTextColor: "#878787",
-            editable: false,
-            backgroundColor: "#f7f7f7",
-          }}
-        />
-        {g}
-        <ScaleButton
-          {...{
-            style: [
-              fw,
-              getStyle(["aic"]),
-              borderRadius("", 12),
-              backgroundColor(disabled ? "#c0c0c0" : "#0099ff"),
-              padding("v", 16),
-            ],
-            onPress: save,
-            disabled,
-          }}>
-          <ReText
-            {...{ style: [fontSize(16), color("#ffffff"), getStyle(["fw6"])] }}>
-            {newMode ? "Create" : "Save"}
-          </ReText>
-        </ScaleButton>
-        {g}
-      </ReView>
+      </ReScrollView>
     </CustomSheetProvider>
   );
 }

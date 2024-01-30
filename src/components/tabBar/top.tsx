@@ -68,7 +68,7 @@ export default function TopTabBar({ isRTL, linkPrefix }: ITabBar) {
             horizontal: true,
             showsHorizontalScrollIndicator: false,
             layout: LinearTransition,
-            contentContainerStyle: [fd],
+            // contentContainerStyle: [fd],
           }}>
           <ReView
             {...{

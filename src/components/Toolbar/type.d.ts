@@ -8,6 +8,7 @@ export interface IToolbarCmpColors {
   navigateText?: string;
   title?: string;
   clearCacheBin?: string;
+  settings?: string;
 }
 export interface IToolbarCmp {
   isRTL?: boolean;

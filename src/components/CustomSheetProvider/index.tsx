@@ -6,7 +6,7 @@ import { ICustomSheetProvider } from "./type";
 export default function CustomSheetProvider({
   sheetId,
   children,
-  gestureEnabled = true,
+  gestureEnabled = false,
   containerStyle,
 }: PropsWithChildren<ICustomSheetProvider>) {
   let safeAreaInsets = useSafeAreaInsets();
@@ -23,8 +23,8 @@ export default function CustomSheetProvider({
         containerStyle,
         safeAreaInsets,
         // snapPoints: [],
-        statusBarTranslucent: false,
-        drawUnderStatusBar: false,
+        // statusBarTranslucent: false,
+        // drawUnderStatusBar: false,
       }}
     />
   );

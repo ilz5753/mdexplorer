@@ -1,4 +1,4 @@
-import { f1, isAndroid } from "@ilz5753/rnutils";
+import { backgroundColor, f1, isAndroid } from "@ilz5753/rnutils";
 import { NavigationContainer } from "@react-navigation/native";
 import { PropsWithChildren } from "react";
 import { KeyboardAvoidingView, StatusBar } from "react-native";
@@ -13,7 +13,7 @@ import "./sheets";
 function WithContexts({ children }: PropsWithChildren) {
   return (
     <GestureHandlerRootView {...{ style: [f1] }}>
-      <SafeAreaProvider {...{ style: [f1] }}>
+      <SafeAreaProvider {...{ style: [f1, backgroundColor("white")] }}>
         <KeyboardAvoidingView
           {...{
             style: [f1],

@@ -1,4 +1,5 @@
 import {
+  ReScrollView,
   ReText,
   ReView,
   ScaleButton,
@@ -80,87 +81,91 @@ export default function NoUTab({
     <CustomSheetProvider {...{ sheetId }}>
       <ReView
         {...{
-          style: [padding("h", 16)],
+          style: [
+            padding("v", 12),
+            getStyle(["aic"]),
+            borderWidth("b", 0.75),
+            borderColor("b", "#777777"),
+          ],
         }}>
+        <ReText
+          {...{
+            style: [fontSize(20), color("#000000"), getStyle(["fw8"])],
+          }}>
+          {newMode ? "Create New" : "Edit"} Tab
+        </ReText>
+      </ReView>
+      <ReScrollView {...{ keyboardShouldPersistTaps: "always" }}>
         <ReView
           {...{
-            style: [
-              padding("v", 12),
-              getStyle(["aic"]),
-              borderWidth("b", 0.75),
-              borderColor("b", "#777777"),
-            ],
+            style: [padding("h", 16)],
           }}>
-          <ReText
+          {g}
+          <InputOutline
             {...{
-              style: [fontSize(20), color("#000000"), getStyle(["fw8"])],
+              value: TabName,
+              onChangeText: setTabName,
+              placeholder: "Tab Name",
+              placeholderTextColor: "#878787",
+              error: emptyRtn
+                ? "Please Fill Tab Screen Name"
+                : isSameName
+                ? "Duplicate Names Found Via Stack Screen Name"
+                : rtnExist
+                ? "Duplicate Tab Screen Name"
+                : undefined,
+            }}
+          />
+          {g}
+          <InputOutline
+            {...{
+              value: lastPath,
+              placeholder: "Last Path",
+              placeholderTextColor: "#878787",
+              editable: false,
+              backgroundColor: "#f7f7f7",
+              focusable: false,
+            }}
+          />
+          {g}
+          <InputOutline
+            {...{
+              value: StackName,
+              onChangeText: setStackName,
+              placeholder: "Stack Name",
+              placeholderTextColor: "#878787",
+              error: emptyRsn
+                ? "Please Fill Stack Screen Name"
+                : isSameName
+                ? "Duplicate Names Found Via Tab Screen Name"
+                : rsnExist
+                ? "Duplicate Stack Screen Name"
+                : undefined,
+            }}
+          />
+          {g}
+          <ScaleButton
+            {...{
+              style: [
+                fw,
+                getStyle(["aic"]),
+                borderRadius("", 12),
+                backgroundColor(disabled ? "#c0c0c0" : "#0099ff"),
+                padding("v", 12),
+              ],
+              onPress: save,
+              disabled,
             }}>
-            {newMode ? "Create New" : "Edit"} Tab
-          </ReText>
+            <ReText
+              {...{
+                style: [fontSize(16), color("#ffffff"), getStyle(["fw6"])],
+              }}>
+              {newMode ? "Create" : "Save"}
+            </ReText>
+          </ScaleButton>
+          {/* {g} */}
         </ReView>
-        {g}
-        <InputOutline
-          {...{
-            value: TabName,
-            onChangeText: setTabName,
-            placeholder: "Tab Name",
-            placeholderTextColor: "#878787",
-            error: emptyRtn
-              ? "Please Fill Tab Screen Name"
-              : isSameName
-              ? "Duplicate Names Found Via Stack Screen Name"
-              : rtnExist
-              ? "Duplicate Tab Screen Name"
-              : undefined,
-          }}
-        />
-        {g}
-        <InputOutline
-          {...{
-            value: lastPath,
-            placeholder: "Last Path",
-            placeholderTextColor: "#878787",
-            editable: false,
-            backgroundColor: "#f7f7f7",
-            focusable: false,
-          }}
-        />
-        {g}
-        <InputOutline
-          {...{
-            value: StackName,
-            onChangeText: setStackName,
-            placeholder: "Stack Name",
-            placeholderTextColor: "#878787",
-            error: emptyRsn
-              ? "Please Fill Stack Screen Name"
-              : isSameName
-              ? "Duplicate Names Found Via Tab Screen Name"
-              : rsnExist
-              ? "Duplicate Stack Screen Name"
-              : undefined,
-          }}
-        />
-        {g}
-        <ScaleButton
-          {...{
-            style: [
-              fw,
-              getStyle(["aic"]),
-              borderRadius("", 12),
-              backgroundColor(disabled ? "#c0c0c0" : "#0099ff"),
-              padding("v", 12),
-            ],
-            onPress: save,
-            disabled,
-          }}>
-          <ReText
-            {...{ style: [fontSize(16), color("#ffffff"), getStyle(["fw6"])] }}>
-            {newMode ? "Create" : "Save"}
-          </ReText>
-        </ScaleButton>
-        {g}
-      </ReView>
+      </ReScrollView>
     </CustomSheetProvider>
   );
 }

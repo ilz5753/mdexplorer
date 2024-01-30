@@ -1,6 +1,7 @@
 import StackNavigation from "../navigation/stack";
 import { IScreen } from "../navigation/type";
 import Explorer from "./Explorer";
+import Fake from "./Fake";
 import Welcome from "./Welcome";
 
 const screens: IScreen[] = [
@@ -13,6 +14,11 @@ const screens: IScreen[] = [
     id: "Explorer",
     name: "Explorer",
     component: Explorer,
+  },
+  {
+    id: "Fake",
+    name: "Fake",
+    component: Fake,
   },
 ];
 export default function Screens() {

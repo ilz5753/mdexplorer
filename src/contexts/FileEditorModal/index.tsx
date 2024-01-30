@@ -1,5 +1,4 @@
-import { MDEditor } from "@ilz5753/rnmd";
-import { HexToRgba, backgroundColor, f1 } from "@ilz5753/rnutils";
+import { backgroundColor, f1 } from "@ilz5753/rnutils";
 import {
   PropsWithChildren,
   createContext,
@@ -12,6 +11,10 @@ import {
 import { Modal } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CtxErrorMsg } from "../../utils/fn";
+import { useFileEditorSettingsModal } from "../FileEditorSettingsModal";
+// import { MDEditorCopy } from "./MC";
+import { MDEditor } from "@ilz5753/rnmd";
+// import { MDEditor } from "./MDEditor";
 import { IFileEditorModal, IFileEditorModalData, TSetData } from "./type";
 let FileEditorModal = createContext<null | IFileEditorModal>(null);
 export let useFileEditorModal = () => {
@@ -23,6 +26,7 @@ export default function FileEditorModalProvider({
   children,
 }: PropsWithChildren) {
   let insets = useSafeAreaInsets();
+  let { settings } = useFileEditorSettingsModal();
   let handlerRef = useRef<(newData?: Partial<IFileEditorModalData>) => void>();
   let [editorVisible, setEditorVisible] = useState(false);
   let [data, setData] = useState<IFileEditorModalData>({
@@ -54,9 +58,6 @@ export default function FileEditorModalProvider({
     () => (
       <MDEditor
         {...{
-          colors: {
-            headerShadowColor: HexToRgba("#000000", 0.25),
-          },
           header: {
             title: data.name,
             subtitle: data.path,
@@ -68,13 +69,15 @@ export default function FileEditorModalProvider({
           },
           text: data.fileContent,
           onSubmitText,
-          topSavHeight: insets.top,
+          // topSavHeight: insets.top,
           bottomSavHeight: insets.bottom,
-          paddingSize: "xxx",
+          ...settings,
+          // paddingSize: "xxx",
+          // horizontal: true,
         }}
       />
     ),
-    [data, insets],
+    [data, insets, settings],
   );
   return (
     <FileEditorModal.Provider
